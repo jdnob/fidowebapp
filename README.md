@@ -1,4 +1,6 @@
 # fidowebapp-go
+WIP
+
 FIDO2 webapp based on DUO Labs library in Go
 # API 
 
