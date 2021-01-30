@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/duo-labs/webauthn v0.0.0-20200714211715-1daaee874e43
+	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.3.0
 	github.com/sirupsen/logrus v1.4.2
 	go.mongodb.org/mongo-driver v1.4.5

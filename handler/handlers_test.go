@@ -7,6 +7,14 @@ import (
 )
 
 func TestHandler(t *testing.T) {
+	testFunc(HelloWorldHandler, "Hello, world !")
+	testFunc(ErrorHandler, "Error")
+	testFunc(IndexHandler, "Index")
+
+}
+
+// See https://www.sohamkamani.com/golang/how-to-build-a-web-application/
+func testFunc(fun http.HandlerFunc, expected string) bool {
 	//Here, we form a new HTTP request. This is the request that's going to be
 	// passed to our handler.
 	// The first argument is the method, the second argument is the route (which
@@ -16,13 +24,14 @@ func TestHandler(t *testing.T) {
 
 	// In case there is an error in forming the request, we fail and stop the test
 	if err != nil {
-		t.Fatal(err)
+		//error
 	}
 
 	// We use Go's httptest library to create an http recorder. This recorder
 	// will act as the target of our http request
 	// (you can think of it as a mini-browser, which will accept the result of
 	// the http request that we make)
+
 	recorder := httptest.NewRecorder()
 
 	// Create an HTTP handler from our handler function. "handler" is the handler
@@ -35,15 +44,9 @@ func TestHandler(t *testing.T) {
 
 	// Check the status code is what we expect.
 	if status := recorder.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
+		return false
 	}
-
-	// Check the response body is what we expect.
-	expected := `Hello, world !`
 	actual := recorder.Body.String()
-	if actual != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v", actual, expected)
-	}
+	return actual == expected
 
 }
