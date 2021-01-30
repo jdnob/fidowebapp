@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"fidowebapp/appcontext"
 	"fidowebapp/config"
 	"fidowebapp/database"
-	"fmt"
+	"flag"
 	"html/template"
+
 	"net/http"
 	"os"
 
@@ -14,6 +16,17 @@ import (
 
 func init() {
 	_ = dotenv.Load()
+}
+
+type Args struct {
+	LogLevel string
+}
+
+func parseArgs() Args {
+	var args Args
+	flag.StringVar(&args.LogLevel, "log", "info", "Log level [trace, debug, info, warning, error]")
+	flag.Parse()
+	return args
 }
 
 type server struct{}
@@ -65,15 +78,17 @@ func renderPage(w http.ResponseWriter, r *http.Request) {
 func main() {
 	// http.ListenAndServe(":9999", nil)
 
+	args := parseArgs()
+
 	ctx := context.Background()
 
 	ctx = database.ContextWithDatabase(ctx, loadDatabaseConfig())
 
 	db := database.DatabaseFromContext(ctx)
+	appcontext.SetupLog(ctx, args.LogLevel, true)
 
-	user := database.FindUser(ctx, db)
+	database.FindAll(ctx, db, "user")
 
-	fmt.Printf("%v\n", user)
 }
 
 func loadDatabaseConfig() config.DatabaseConfiguration {
