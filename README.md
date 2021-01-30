@@ -1,3 +1,5 @@
+![Go](https://github.com/jdnob/fidowebapp/workflows/Go/badge.svg)
+
 # fidowebapp in GoLang
 
 FIDO2 webapp based on DUO Labs library in Go
