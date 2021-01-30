@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"fidowebapp/api"
 	"fidowebapp/appcontext"
 	"fidowebapp/config"
 	"fidowebapp/database"
 	"fidowebapp/entity"
 	"flag"
+	"net/http"
 
 	"os"
 
@@ -41,6 +43,8 @@ func main() {
 	entity.FindAllUsers(ctx, db)
 	entity.FindUser(ctx, db, "4bacf836-3d6d-401e-99dc-54879cab1975")
 
+	r := api.MyViewRouter()
+	http.ListenAndServe(":9999", r)
 }
 
 func loadDatabaseConfig() config.DatabaseConfiguration {
