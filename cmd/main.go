@@ -5,6 +5,7 @@ import (
 	"fidowebapp/appcontext"
 	"fidowebapp/config"
 	"fidowebapp/database"
+	"fidowebapp/entity"
 	"flag"
 
 	"os"
@@ -28,8 +29,6 @@ func parseArgs() Args {
 }
 
 func main() {
-	// http.ListenAndServe(":9999", nil)
-
 	args := parseArgs()
 
 	ctx := context.Background()
@@ -39,8 +38,8 @@ func main() {
 	db := database.DatabaseFromContext(ctx)
 	appcontext.SetupLog(ctx, args.LogLevel, true)
 
-	database.FindAll(ctx, db, "user")
-	database.FindUser(ctx, db)
+	entity.FindAllUsers(ctx, db)
+	entity.FindUser(ctx, db, "4bacf836-3d6d-401e-99dc-54879cab1975")
 
 }
 
