@@ -6,9 +6,7 @@ import (
 	"fidowebapp/config"
 	"fidowebapp/database"
 	"flag"
-	"html/template"
 
-	"net/http"
 	"os"
 
 	dotenv "github.com/joho/godotenv"
@@ -27,52 +25,6 @@ func parseArgs() Args {
 	flag.StringVar(&args.LogLevel, "log", "info", "Log level [trace, debug, info, warning, error]")
 	flag.Parse()
 	return args
-}
-
-type server struct{}
-
-// api de base call using /
-func home(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"message": "hello world"}`))
-
-	// case "POST":
-	// 	w.WriteHeader(http.StatusCreated)
-	// 	w.Write([]byte(`{"message": "post created"}`))
-	// case "PUT":
-	// 	w.WriteHeader(http.StatusAccepted)
-	// 	w.Write([]byte(`{"message": "put created"}`))
-	// case "DELETE":
-	// 	w.WriteHeader(http.StatusAccepted)
-	// 	w.Write([]byte(`{"message": "delete created"}`))
-	// default:
-	// 	w.WriteHeader(http.StatusNotFound)
-	// 	w.Write([]byte(`{"message": "not found"}`))
-	// }
-}
-
-func getStatus(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	if r.Method == "GET" {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"message": "Status fine"}`))
-	}
-}
-
-func index(w http.ResponseWriter, r *http.Request) {
-	var t = template.Must(template.ParseFiles("static/index.html"))
-	t.Execute(w, nil)
-}
-
-type PageVariables struct {
-	Date string
-	Time string
-}
-
-func renderPage(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "/static/index.html")
 }
 
 func main() {
