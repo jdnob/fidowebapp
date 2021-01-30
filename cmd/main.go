@@ -88,6 +88,7 @@ func main() {
 	appcontext.SetupLog(ctx, args.LogLevel, true)
 
 	database.FindAll(ctx, db, "user")
+	database.FindUser(ctx, db)
 
 }
 

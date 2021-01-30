@@ -4,9 +4,11 @@ import (
 	"context"
 	"fidowebapp/config"
 	"fmt"
-	"log"
+
+	log "github.com/sirupsen/logrus"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -18,11 +20,11 @@ const (
 
 // User exported
 type User struct {
-	ID              string `bson: "_id, omitempty"`
-	userName        string `bson: "userName, omitempty"`
-	userDisplayName string `bson: "userDisplayName, omitempty"`
-	userUUID        string `bson: "userUUID, omitempty"`
-	userHandle      string `bson: "userHandle, omitempty"`
+	ID              primitive.ObjectID `bson: "_id, omitempty"`
+	UserName        string             `bson: "userName, omitempty"`
+	UserDisplayName string             `bson: "userDisplayName, omitempty"`
+	UserUUID        string             `bson: "userUUID, omitempty"`
+	UserHandle      string             `bson: "userHandle, omitempty"`
 }
 
 func ContextWithDatabase(ctx context.Context, dbConfig config.DatabaseConfiguration) context.Context {
@@ -57,17 +59,33 @@ func createDatabase(ctx context.Context, dbConfig config.DatabaseConfiguration) 
 }
 
 // Find All entries of this collection
-func findAll(ctx context.Context, database *mongo.Database, collectionName string) {
+func FindAll(ctx context.Context, database *mongo.Database, collectionName string) {
+	log.Debug("Log debug!")
+	// m := make(map[string]User)
 	cursor, err := database.Collection(collectionName).Find(ctx, bson.M{})
 	if err != nil {
 		// error
 		log.Fatal(err)
 	}
+
 	var users []User
-	if err = cursor.All(ctx, &users); err != nil {
-		log.Fatal(err)
+	// for cursor.Next(ctx) {
+	// 	log.Info(cursor.Current)
+	// 	u := User{}
+	// 	err := cursor.Decode(&u)
+	// 	if err != nil {
+	// 		// Error
+	// 	}
+	// 	log.Info(u)
+
+	// 	m[u.userUUID] = u
+	// }
+
+	if err := cursor.All(ctx, &users); err != nil {
+		// error
 	}
-	fmt.Println(users)
+	defer cursor.Close(ctx)
+	log.Info(users)
 
 }
 
@@ -80,7 +98,10 @@ func FindUser(ctx context.Context, database *mongo.Database) User {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(result)
+
+	// user := User{}
+
+	log.WithField("user", result).Info()
 	return result
 }
 
