@@ -1,4 +1,4 @@
-![Go](https://github.com/jdnob/fidowebapp/workflows/Go/badge.svg)
+![Go|main](https://github.com/jdnob/fidowebapp/workflows/Go/badge.svg)
 
 # fidowebapp in GoLang
 
