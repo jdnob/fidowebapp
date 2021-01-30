@@ -1,14 +1,11 @@
-# fidowebapp-go
-WIP
+# fidowebapp in GoLang
 
 FIDO2 webapp based on DUO Labs library in Go
-# API 
 
-my api server in go 
+# Features (soon)
 
-routes : 
-routes defined in /api/routes.go
-
-files : 
-- service1.go
-- service2.go
+* Provides web app ready-to-use in fido alliance
+* Integration of functions BeginRegistration, FinishRegistration, BeginAuthentication and FinishAuthentication from Duo Labs library
+* User-support to store authenticators, and informations related
+* Stores session client-side
+* Relying Party compatible with FIDO Alliance recommandations 
